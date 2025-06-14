@@ -1,3 +1,9 @@
+# vscode files
+.clang-format
+.vscode/
+**/build/
+**/bin/
+
 # Prerequisites
 *.d
 
