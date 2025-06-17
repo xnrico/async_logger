@@ -43,20 +43,19 @@ class thread_pool {
 
 		// first package task into returning futures before entering the critical section
 		// it is created as a shared pointer because its lifetime is beyond the add_task function
-		
-		// The inner lambda `[f_captured, args_captured]() mutable` is what the packaged_task will execute
-        // Its signature is void() because it takes no arguments itself.
-        // It captures 'f_captured' and 'args_captured' by value (which are already perfectly forwarded once)
-        // and then uses std::apply to call the original function 'f' with 'args'.
 
-        auto task = std::make_shared<std::packaged_task<return_type()>>(
-            [f_captured = std::forward<F>(f), args_captured = std::make_tuple(std::forward<Args>(args)...)]() {
-                // When this lambda is called (by the thread pool), it will
-                // execute the original function 'f_captured' with its 'args_captured'.
-                // std::apply handles unpacking the tuple and passing arguments with correct value categories.
-                return std::apply(f_captured, args_captured);
-            }
-        );
+		// The inner lambda `[f_captured, args_captured]() mutable` is what the packaged_task will execute
+		// Its signature is void() because it takes no arguments itself.
+		// It captures 'f_captured' and 'args_captured' by value (which are already perfectly forwarded once)
+		// and then uses std::apply to call the original function 'f' with 'args'.
+
+		auto task = std::make_shared<std::packaged_task<return_type()>>(
+			[f_captured = std::forward<F>(f), args_captured = std::make_tuple(std::forward<Args>(args)...)]() {
+				// When this lambda is called (by the thread pool), it will
+				// execute the original function 'f_captured' with its 'args_captured'.
+				// std::apply handles unpacking the tuple and passing arguments with correct value categories.
+				return std::apply(f_captured, args_captured);
+			});
 
 		{  // critical section
 			// when thread pool is running, add thread to the queue
