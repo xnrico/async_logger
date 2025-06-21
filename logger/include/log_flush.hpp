@@ -12,12 +12,13 @@
 namespace ricox {
 class log_flush {
    public:
-	virtual void flush(const std::string& text) = 0;
+	virtual auto flush(const std::string& text) -> void = 0;
+	virtual ~log_flush() = 0;  // for inheritence
 };
 
 class std_flush final : public log_flush {
    public:
-	void flush(const std::string& text) override;
+	auto flush(const std::string& text) -> void override;
 };
 
 class file_flush final : public log_flush {
@@ -26,7 +27,9 @@ class file_flush final : public log_flush {
 	std::ofstream outfile;
 
    public:
-	void flush(const std::string& text) override;
+	file_flush() = delete;
+	file_flush(const std::string& file_name_);
+	auto flush(const std::string& text) -> void override;
 };
 
 class roll_flush final : public log_flush {
@@ -37,13 +40,15 @@ class roll_flush final : public log_flush {
 	size_t curr_size;
 
    public:
-	void flush(const std::string& text) override;
+	roll_flush() = delete;
+	roll_flush(const std::string& base_name, size_t max_size_);
+	auto flush(const std::string& text) -> void override;
 };
 
 class log_flush_factory {
    public:
 	template <typename flush_type, typename... Args>
-	std::shared_ptr<log_flush> create(Args&&... args) {
+	auto create(Args&&... args) -> std::shared_ptr<log_flush> {
 		return std::make_shared<flush_type>(std::forward<Args>(args))...;
 	}
 };

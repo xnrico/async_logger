@@ -10,7 +10,7 @@ log_message::log_message(const std::string& file_in, const std::string& logger_i
 
 message_builder::message_builder(const std::shared_ptr<ricox::log_message>& log_message_in) : log_message(log_message_in) {}
 
-std::string message_builder::digest() {
+auto message_builder::digest() -> std::string {
 	auto out_str = std::string{};
 
 	return out_str;

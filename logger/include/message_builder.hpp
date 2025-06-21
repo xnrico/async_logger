@@ -48,6 +48,6 @@ class message_builder {
 	message_builder(message_builder&&) = delete;
 	message_builder&& operator=(message_builder&&) = delete;
 
-	std::string digest();
+	auto digest() -> std::string;
 };
 }  // namespace ricox

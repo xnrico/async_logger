@@ -4,14 +4,10 @@
 
 namespace ricox {
 
-void std_flush::flush(const std::string& text) {
-    std::cout << text;
-}
+auto std_flush::flush(const std::string& text) -> void { std::cout << text; }
 
-void file_flush::flush(const std::string& text) {
-    
-}
+auto file_flush::flush(const std::string& text) -> void {}
 
-void roll_flush::flush(const std::string& text) {}
+auto roll_flush::flush(const std::string& text) -> void {}
 
 }  // namespace ricox
