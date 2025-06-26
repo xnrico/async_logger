@@ -2,13 +2,15 @@
 
 namespace ricox {
 async_worker::async_worker(const std::function<void(async_buffer&)> consumer_callback_)
-	: consumer_callback(consumer_callback_), worker(async_worker::thread_func, this), is_stopped(false) {}
+	: consumer_callback(consumer_callback_),
+	  worker([this]() -> void { this->async_worker::thread_func(); }),
+	  is_stopped(false) {}
 
 async_worker::async_worker(const std::function<void(async_buffer&)> consumer_callback_, size_t buffer_size_)
 	: producer_buffer(buffer_size_),
 	  consumer_buffer(buffer_size_),
 	  consumer_callback(consumer_callback_),
-	  worker(async_worker::thread_func, this),
+	  worker([this]() -> void { this->async_worker::thread_func(); }),
 	  is_stopped(false) {}
 
 // background thread that swaps buffers and notify the actors involved

@@ -36,10 +36,10 @@ struct log_message {
 
 class message_builder {
    private:
-    std::weak_ptr<log_message> log_message;
+    std::weak_ptr<log_message> message;
 
    public:
-    message_builder(const std::shared_ptr<ricox::log_message>& log_message_in);
+    message_builder(const std::shared_ptr<ricox::log_message>& message_);
 	message_builder() = delete;
 	~message_builder() = default;
 

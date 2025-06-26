@@ -3,6 +3,13 @@
 
 #include <string>
 #include <unordered_map>
+#include <memory>
+#include <vector>
+
+namespace ricox {
+    class logger;
+	class log_flush;
+}
 
 namespace ricox {
 class manager {	 // manager will be a singleton class
@@ -23,7 +30,10 @@ class manager {	 // manager will be a singleton class
 	static auto get_instance() -> manager&;
 	auto get_logger(const std::string& logger_name) -> std::shared_ptr<logger>;
 	auto get_default_logger() -> std::shared_ptr<logger>;
+
+	auto create_logger(const std::string& name, const std::vector<std::shared_ptr<log_flush>>& flush) -> void;
 	auto create_logger(const std::shared_ptr<logger> logger) -> void;
+
 	auto remove_logger(const std::string& logger_name) -> void;
 };
 }  // namespace ricox

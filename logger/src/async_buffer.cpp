@@ -28,7 +28,7 @@ auto async_buffer::advance_consumer(size_t step) -> void {
 	this->consumer_idx += step;
 }
 
-auto async_buffer::reset() -> void {
+auto async_buffer::reset() noexcept -> void {
 	this->producer_idx = 0U;
 	this->consumer_idx = 0U;
 }

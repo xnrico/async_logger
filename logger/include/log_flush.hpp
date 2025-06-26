@@ -29,6 +29,7 @@ class file_flush final : public log_flush {
    public:
 	file_flush() = delete;
 	file_flush(const std::string& file_name_);
+	~file_flush() override = default;
 	auto flush(const std::string& text) -> void override;
 };
 
@@ -42,6 +43,7 @@ class roll_flush final : public log_flush {
    public:
 	roll_flush() = delete;
 	roll_flush(const std::string& base_name, size_t max_size_);
+	~roll_flush() override = default;
 	auto flush(const std::string& text) -> void override;
 };
 
@@ -49,7 +51,7 @@ class log_flush_factory {
    public:
 	template <typename flush_type, typename... Args>
 	auto create(Args&&... args) -> std::shared_ptr<log_flush> {
-		return std::make_shared<flush_type>(std::forward<Args>(args))...;
+		return std::make_shared<flush_type>(std::forward<Args>(args)...);
 	}
 };
 }  // namespace ricox

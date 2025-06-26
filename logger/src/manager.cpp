@@ -1,7 +1,8 @@
 #include "manager.hpp"
+#include "async_logger.hpp"
 
 namespace ricox {
-manager::manager() {
+manager::manager() {  // use a logger builder to build a default logger
 	auto lock = std::unique_lock<std::mutex>(mtx);
 
 	auto builder = std::make_unique<logger_builder>();
@@ -25,6 +26,18 @@ auto manager::get_logger(const std::string& logger_name) -> std::shared_ptr<logg
 }
 
 auto manager::get_default_logger() -> std::shared_ptr<logger> { return default_logger; }
+
+auto manager::create_logger(const std::string& name, const std::vector<std::shared_ptr<log_flush>>& flush) -> void {
+	auto lock = std::unique_lock<std::mutex>(mtx);
+
+	auto builder = std::make_unique<logger_builder>();
+	builder->set_name(std::string_view{name});
+	for (const auto flush_ : flush) {
+		builder->add_flush(flush_);
+	}
+
+	logger_map.try_emplace(name, builder->build());
+}
 
 auto manager::create_logger(const std::shared_ptr<logger> logger) -> void {
 	auto lock = std::unique_lock<std::mutex>(mtx);

@@ -8,7 +8,7 @@ log_message::log_message(const std::string& file_in, const std::string& logger_i
 	static_assert(true);
 }
 
-message_builder::message_builder(const std::shared_ptr<ricox::log_message>& log_message_in) : log_message(log_message_in) {}
+message_builder::message_builder(const std::shared_ptr<ricox::log_message>& message_) : message(message_) {}
 
 auto message_builder::digest() -> std::string {
 	auto out_str = std::string{};
