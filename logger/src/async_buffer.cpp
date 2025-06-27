@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <utility>
+#include <iostream>
 
 namespace ricox {
 
@@ -43,11 +44,13 @@ auto async_buffer::empty() noexcept -> bool { return producer_idx == consumer_id
 
 auto async_buffer::read(size_t len) -> std::string_view {
 	if (len > this->get_readable_size()) throw std::runtime_error("Invalid read by consumer");
+	// this->advance_consumer(len);
 	return std::string_view(this->buffer.data() + consumer_idx, len);
 }
 
 auto async_buffer::write(std::string_view sv) -> void {
 	if (sv.size() > this->get_writable_size()) throw std::runtime_error("Invalid write by producer");
 	std::ranges::copy(sv, this->buffer.data() + producer_idx);
+	this->advance_producer(sv.size());
 }
 };	// namespace ricox

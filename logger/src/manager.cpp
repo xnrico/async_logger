@@ -31,7 +31,7 @@ auto manager::create_logger(const std::string& name, const std::vector<std::shar
 	auto lock = std::unique_lock<std::mutex>(mtx);
 
 	auto builder = std::make_unique<logger_builder>();
-	builder->set_name(std::string_view{name});
+	builder->set_name(name);
 	for (const auto flush_ : flush) {
 		builder->add_flush(flush_);
 	}

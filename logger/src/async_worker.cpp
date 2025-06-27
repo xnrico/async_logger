@@ -19,7 +19,6 @@ auto async_worker::thread_func() -> void {
 		{
 			// consumer buffer is empty at the beginning of the loop, consumer waits for producer to produce data
 			auto lock = std::unique_lock<std::mutex>(common_mtx);  // prevent consumers from reading
-
 			// wakes up when data is produced or when the worker is stopped
 			consumer_cv.wait(lock, [&]() -> bool { return !producer_buffer.empty() || is_stopped.load(); });
 
