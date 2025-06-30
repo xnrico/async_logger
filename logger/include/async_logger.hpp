@@ -1,20 +1,19 @@
 #pragma once
 
 #include "async_worker.hpp"
-#include "common.hpp"
-#include "log_flush.hpp"
+#include "log_level.hpp"
 
 #include <format>  // C++20 Format, only supported on gcc-13+
+#include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
-#include <iostream>
 
 namespace ricox {
 
-namespace common {
-enum struct log_level : uint8_t;  // forward declaration
-}
+// Forward declaration of async_buffer and async_worker
+class async_buffer;
+class log_flush;
 
 class logger {
    private:
@@ -41,6 +40,36 @@ class logger {
 		// log a message with given log level and format string
 		auto text = std::format(format, std::forward<Args>(args)...);
 		serialize(level, file, line, text);
+	}
+
+	template <typename... Args>
+	auto debug(const std::string& file, const size_t line, std::format_string<Args...> format, Args&&... args) -> void {
+		// log a debug message
+		log(common::log_level::DEBUG, file, line, format, std::forward<Args>(args)...);
+	}
+
+	template <typename... Args>
+	auto info(const std::string& file, const size_t line, std::format_string<Args...> format, Args&&... args) -> void {
+		// log an info message
+		log(common::log_level::INFO, file, line, format, std::forward<Args>(args)...);
+	}
+
+	template <typename... Args>
+	auto warn(const std::string& file, const size_t line, std::format_string<Args...> format, Args&&... args) -> void {
+		// log a warning message
+		log(common::log_level::WARN, file, line, format, std::forward<Args>(args)...);
+	}
+
+	template <typename... Args>
+	auto error(const std::string& file, const size_t line, std::format_string<Args...> format, Args&&... args) -> void {
+		// log an error message
+		log(common::log_level::ERROR, file, line, format, std::forward<Args>(args)...);
+	}
+
+	template <typename... Args>
+	auto fatal(const std::string& file, const size_t line, std::format_string<Args...> format, Args&&... args) -> void {
+		// log a fatal message
+		log(common::log_level::FATAL, file, line, format, std::forward<Args>(args)...);
 	}
 };
 

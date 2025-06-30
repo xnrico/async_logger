@@ -1,4 +1,6 @@
 #include "common.hpp"
+#include "async_logger.hpp"
+#include "manager.hpp"
 
 #include <map>
 
@@ -7,23 +9,6 @@ namespace common {
 auto get_logger(const std::string& name) -> std::shared_ptr<logger> { return manager::get_instance().get_logger(name); }
 
 auto get_default_logger() -> std::shared_ptr<logger> { return manager::get_instance().get_default_logger(); }
-
-auto level_to_string(log_level level) -> std::string {
-	switch (level) {
-		case log_level::DEBUG:
-			return "DEBUG";
-		case log_level::INFO:
-			return "INFO";
-		case log_level::WARN:
-			return "WARN";
-		case log_level::ERROR:
-			return "ERROR";
-		case log_level::FATAL:
-			return "FATAL";
-		default:
-			return "UNKNOWN";
-	}
-}
 
 auto get_short_thread_id(std::thread::id id) -> int {
 	static std::atomic<int> next_short_id{0};

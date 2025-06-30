@@ -1,11 +1,12 @@
 #pragma once
 
 #include "common.hpp"
+#include "log_level.hpp"
 
 #include <chrono>
+#include <memory>
 #include <string>
 #include <thread>
-#include <memory>
 
 namespace std::chrono {
 using time_t = time_point<system_clock>;
@@ -22,8 +23,8 @@ struct log_message {
 	size_t line;  // line number from which the message was logged
 	common::log_level log_level;
 
-	log_message(const std::string& file_in, const std::string& logger_in, const std::string& msg_in, std::chrono::time_t time_in,
-				std::thread::id thread_in, size_t line_in, common::log_level level_in);
+	log_message(const std::string& file_in, const std::string& logger_in, const std::string& msg_in,
+				std::chrono::time_t time_in, std::thread::id thread_in, size_t line_in, common::log_level level_in);
 
 	log_message() = delete;
 	~log_message() = default;
@@ -36,10 +37,10 @@ struct log_message {
 
 class message_builder {
    private:
-    std::weak_ptr<log_message> message;
+	std::weak_ptr<log_message> message;
 
    public:
-    message_builder(const std::shared_ptr<ricox::log_message>& message_);
+	message_builder(const std::shared_ptr<ricox::log_message>& message_);
 	message_builder() = delete;
 	~message_builder() = default;
 

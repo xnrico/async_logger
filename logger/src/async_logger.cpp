@@ -1,6 +1,6 @@
 #include "async_logger.hpp"
+#include "log_flush.hpp"
 #include "message_builder.hpp"
-
 
 namespace ricox {
 logger::logger(const std::string& name_, const std::vector<std::shared_ptr<log_flush>>& flush_)

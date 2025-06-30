@@ -1,4 +1,5 @@
 #pragma once
+
 #include "async_logger.hpp"
 
 #include <string>
@@ -7,7 +8,6 @@
 #include <vector>
 
 namespace ricox {
-    class logger;
 	class log_flush;
 }
 

@@ -1,5 +1,6 @@
 #include "manager.hpp"
 #include "async_logger.hpp"
+#include "log_flush.hpp"
 
 namespace ricox {
 manager::manager() {  // use a logger builder to build a default logger

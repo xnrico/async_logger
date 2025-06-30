@@ -4,6 +4,15 @@
 
 namespace ricox {
 
+// Define ANSI escape codes as constants for readability
+constexpr const char* RESET = "\033[0m";
+constexpr const char* BOLD = "\033[1m";
+constexpr const char* BLACK = "\033[30m";
+constexpr const char* RED = "\033[31m";
+constexpr const char* YELLOW = "\033[33m";
+constexpr const char* BLUE = "\033[34m";
+constexpr const char* MAGENTA = "\033[35m";
+
 log_message::log_message(const std::string& file_in, const std::string& logger_in, const std::string& msg_in,
 						 std::chrono::time_t time_in, std::thread::id thread_in, size_t line_in,
 						 common::log_level level_in)
@@ -30,9 +39,32 @@ auto message_builder::digest() -> std::string {
 		ss << std::put_time(std::localtime(&in_time_t), "%Y-%m-%d %H:%M:%S");
 		auto time_str = ss.str();
 
-		out_str += std::format("[{}][Thread #{}][{}:{}][{}][{}]: {}\n", time_str, common::get_short_thread_id(msg->thread_id),
-							   msg->file_name, msg->line, msg->logger_name, common::level_to_string(msg->log_level),
-							   msg->message);
+		// colorize the output based on log level
+		auto COLOR = RESET;
+		switch (msg->log_level) {
+			case common::log_level::DEBUG:
+				COLOR = BLUE;
+				break;
+			case common::log_level::INFO:
+				COLOR = BLACK;
+				break;
+			case common::log_level::WARN:
+				COLOR = YELLOW;
+				break;
+			case common::log_level::ERROR:
+				COLOR = MAGENTA;
+				break;
+			case common::log_level::FATAL:
+				COLOR = RED;
+				break;
+			default:
+				COLOR = RESET;	// fallback to reset if log level is unknown
+				break;
+		}
+
+		out_str += std::format("{}[{}][Thread #{}][{}:{}][{}][{}]: {}{}\n", COLOR, time_str,
+							   common::get_short_thread_id(msg->thread_id), msg->file_name, msg->line, msg->logger_name,
+							   common::level_to_string(msg->log_level), msg->message, RESET);
 	} else {
 		out_str += "Invalid log message\n";
 	}

@@ -2,8 +2,8 @@
 
 #include "async_buffer.hpp"
 
-#include <condition_variable>
 #include <atomic>
+#include <condition_variable>
 #include <functional>
 #include <mutex>
 #include <thread>
@@ -24,13 +24,13 @@ class async_worker {
 	std::thread worker;
 	std::function<void(async_buffer&)> consumer_callback;
 
-    std::atomic<bool> is_stopped;
+	std::atomic<bool> is_stopped;
 
-    auto thread_func() -> void;
+	auto thread_func() -> void;
 
    public:
 	async_worker() = delete;
-    async_worker(const std::function<void(async_buffer&)> consumer_callback_);
+	async_worker(const std::function<void(async_buffer&)> consumer_callback_);
 	async_worker(const std::function<void(async_buffer&)> consumer_callback_, size_t buffer_size_);
 	~async_worker();
 
@@ -39,6 +39,6 @@ class async_worker {
 	async_worker(async_worker&&) = delete;
 	async_worker&& operator=(async_worker&&) = delete;
 
-    auto write(std::string_view sv) -> void;
+	auto write(std::string_view sv) -> void;
 };
 }  // namespace ricox
