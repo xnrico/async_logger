@@ -32,7 +32,7 @@ class manager {	 // manager will be a singleton class
 	auto get_default_logger() -> std::shared_ptr<logger>;
 
 	auto create_logger(const std::string& name, const std::vector<std::shared_ptr<log_flush>>& flush) -> void;
-	auto create_logger(const std::shared_ptr<logger> logger) -> void;
+	auto create_logger(const std::shared_ptr<logger> logger_) -> void;
 
 	auto remove_logger(const std::string& logger_name) -> void;
 };

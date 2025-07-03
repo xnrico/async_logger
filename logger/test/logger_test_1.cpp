@@ -57,8 +57,7 @@ auto main(int argc, char** argv) -> int {
 	auto t5 = std::thread(log_fatal, 10);
 
 	for (auto i = 0; i < 10; ++i) {
-		ricox::common::get_default_logger()->log(ricox::common::log_level::INFO, __FILE__, __LINE__,
-												 "MAIN THREAD: This is a test log message.");
+		ricox::common::INFO_DEFAULT("This is a test info MAINN message.");
 		std::this_thread::sleep_for(std::chrono::milliseconds(200));
 	}
 

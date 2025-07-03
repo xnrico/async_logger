@@ -36,7 +36,7 @@ auto message_builder::digest() -> std::string {
 		auto ss = std::stringstream{};
 
 		auto in_time_t = std::chrono::system_clock::to_time_t(msg->log_time);
-		ss << std::put_time(std::localtime(&in_time_t), "%Y-%m-%d %H:%M:%S");
+		ss << std::put_time(std::localtime(&in_time_t), "%I:%M:%S %p");
 		auto time_str = ss.str();
 
 		// colorize the output based on log level
@@ -62,7 +62,13 @@ auto message_builder::digest() -> std::string {
 				break;
 		}
 
-		out_str += std::format("{}[{}][Thread #{}][{}:{}][{}][{}]: {}{}\n", COLOR, time_str,
+		// format the file name to only include the base name
+		auto pos = msg->file_name.find_last_of("/\\");
+		if (pos != std::string::npos) {
+			msg->file_name = msg->file_name.substr(pos + 1);
+		}
+
+		out_str += std::format("{}[{}][Thread #{}][{}:{}][{}][{}]:\t{}{}\n", COLOR, time_str,
 							   common::get_short_thread_id(msg->thread_id), msg->file_name, msg->line, msg->logger_name,
 							   common::level_to_string(msg->log_level), msg->message, RESET);
 	} else {

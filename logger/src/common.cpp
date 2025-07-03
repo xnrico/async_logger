@@ -26,5 +26,18 @@ auto get_short_thread_id(std::thread::id id) -> int {
 	return it->second;
 }
 
+auto create_logger(const std::string& name, const std::vector<std::shared_ptr<log_flush>>& flush)
+	-> std::shared_ptr<logger> {
+	manager::get_instance().create_logger(name, flush);
+	return get_logger(name);
+}
+
+auto create_logger(std::shared_ptr<logger> logger_) -> std::shared_ptr<logger> {
+	manager::get_instance().create_logger(logger_);
+	return get_logger(logger_->get_name());
+}
+
+auto remove_logger(const std::string& name) -> void { manager::get_instance().remove_logger(name); }
+
 }  // namespace common
 }  // namespace ricox

@@ -40,9 +40,9 @@ auto manager::create_logger(const std::string& name, const std::vector<std::shar
 	logger_map.try_emplace(name, builder->build());
 }
 
-auto manager::create_logger(const std::shared_ptr<logger> logger) -> void {
+auto manager::create_logger(const std::shared_ptr<logger> logger_) -> void {
 	auto lock = std::unique_lock<std::mutex>(mtx);
-	logger_map.try_emplace(std::string{logger->get_name()}, logger);  // return values are not needed here
+	logger_map.try_emplace(std::string{logger_->get_name()}, logger_);  // return values are not needed here
 }
 
 auto manager::remove_logger(const std::string& logger_name) -> void {
