@@ -3,6 +3,8 @@
 .vscode/
 **/build/
 **/bin/
+**/test/file_log
+**/test/roll_log
 
 # Prerequisites
 *.d

@@ -29,12 +29,14 @@ class file_flush final : public log_flush {
    public:
 	file_flush() = delete;
 	file_flush(const std::string& file_name_);
-	~file_flush() override = default;
+	~file_flush() override;
 	auto flush(const std::string& text) -> void override;
 };
 
 class roll_flush final : public log_flush {
    private:
+	static constexpr size_t DEFAULT_MAX_SIZE = 2 << 11;  // default max size is 4 MB
+
 	std::string base_name;
 	std::ofstream outfile;
 	size_t max_size;
@@ -42,8 +44,9 @@ class roll_flush final : public log_flush {
 
    public:
 	roll_flush() = delete;
+	roll_flush(const std::string& base_name);
 	roll_flush(const std::string& base_name, size_t max_size_);
-	~roll_flush() override = default;
+	~roll_flush() override;
 	auto flush(const std::string& text) -> void override;
 };
 

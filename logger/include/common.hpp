@@ -8,6 +8,8 @@
 #include <thread>
 
 namespace ricox {
+class log_flush;
+
 namespace common {
 
 #define DEBUG_DEFAULT(format, ...) get_default_logger()->debug(__FILE__, __LINE__, format, ##__VA_ARGS__)
@@ -34,6 +36,14 @@ auto create_logger(const std::string& name, const std::vector<std::shared_ptr<lo
 	-> std::shared_ptr<logger>;
 auto create_logger(std::shared_ptr<logger> logger_) -> std::shared_ptr<logger>;
 auto remove_logger(const std::string& name) -> void;
+
+template <typename flush_type, typename... Args>
+auto create_logger(const std::string& name, Args&&... args) -> std::shared_ptr<logger> {
+	// Create a logger with a single flush type and given arguments
+	static_assert(std::is_base_of<ricox::log_flush, flush_type>::value, "flush_type must be derived from log_flush");
+	manager::get_instance().create_logger<flush_type>(name, std::forward<Args>(args)...);
+	return get_logger(name);
+}
 
 }  // namespace common
 }  // namespace ricox

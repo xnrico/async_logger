@@ -90,6 +90,14 @@ class logger_builder {	// must use unique pointer and exclusive access from sing
 	auto set_name(const std::string& name_) noexcept -> void;
 	auto add_flush(std::shared_ptr<log_flush> flush_) -> void;
 	auto build() -> std::shared_ptr<logger>;
+
+	template <typename flush_type, typename... Args>
+	auto add_flush(Args&&... args) -> void {
+		// add a flush object of type flush_type with given arguments
+		static_assert(std::is_base_of<log_flush, flush_type>::value, "flush_type must be derived from log_flush");
+		auto flush_ptr = std::make_shared<flush_type>(std::forward<Args>(args)...);
+		add_flush(flush_ptr);
+	}
 };
 
 }  // namespace ricox
