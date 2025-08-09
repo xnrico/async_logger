@@ -6,23 +6,24 @@
 #include <memory>
 #include <string>
 #include <thread>
+#include <source_location>
 
 namespace ricox {
 class log_flush;
 
 namespace common {
 
-#define DEBUG_DEFAULT(format, ...) get_default_logger()->debug(__FILE__, __LINE__, format, ##__VA_ARGS__)
-#define INFO_DEFAULT(format, ...) get_default_logger()->info(__FILE__, __LINE__, format, ##__VA_ARGS__)
-#define WARN_DEFAULT(format, ...) get_default_logger()->warn(__FILE__, __LINE__, format, ##__VA_ARGS__)
-#define ERROR_DEFAULT(format, ...) get_default_logger()->error(__FILE__, __LINE__, format, ##__VA_ARGS__)
-#define FATAL_DEFAULT(format, ...) get_default_logger()->fatal(__FILE__, __LINE__, format, ##__VA_ARGS__)
+#define DEBUG_DEFAULT(format, ...) get_default_logger()->debug(std::source_location::current(), format, ##__VA_ARGS__)
+#define INFO_DEFAULT(format, ...) get_default_logger()->info(std::source_location::current(), format, ##__VA_ARGS__)
+#define WARN_DEFAULT(format, ...) get_default_logger()->warn(std::source_location::current(), format, ##__VA_ARGS__)
+#define ERROR_DEFAULT(format, ...) get_default_logger()->error(std::source_location::current(), format, ##__VA_ARGS__)
+#define FATAL_DEFAULT(format, ...) get_default_logger()->fatal(std::source_location::current(), format, ##__VA_ARGS__)
 
-#define DEBUG(name, format, ...) get_logger(name)->debug(__FILE__, __LINE__, format, ##__VA_ARGS__)
-#define INFO(name, format, ...) get_logger(name)->info(__FILE__, __LINE__, format, ##__VA_ARGS__)
-#define WARN(name, format, ...) get_logger(name)->warn(__FILE__, __LINE__, format, ##__VA_ARGS__)
-#define ERROR(name, format, ...) get_logger(name)->error(__FILE__, __LINE__, format, ##__VA_ARGS__)
-#define FATAL(name, format, ...) get_logger(name)->fatal(__FILE__, __LINE__, format, ##__VA_ARGS__)
+#define DEBUG(name, format, ...) get_logger(name)->debug(std::source_location::current(), format, ##__VA_ARGS__)
+#define INFO(name, format, ...) get_logger(name)->info(std::source_location::current(), format, ##__VA_ARGS__)
+#define WARN(name, format, ...) get_logger(name)->warn(std::source_location::current(), format, ##__VA_ARGS__)
+#define ERROR(name, format, ...) get_logger(name)->error(std::source_location::current(), format, ##__VA_ARGS__)
+#define FATAL(name, format, ...) get_logger(name)->fatal(std::source_location::current(), format, ##__VA_ARGS__)
 
 static constexpr size_t DEFAULT_BUFFER_SIZE = 104857600U;  // 100MB
 

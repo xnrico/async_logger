@@ -3,10 +3,11 @@
 #include <chrono>
 #include <iostream>
 #include <thread>
+#include <source_location>
 
 auto log_info(unsigned int freq) -> void {
 	for (auto i = 0; i < freq; ++i) {
-		ricox::common::get_default_logger()->log(ricox::common::log_level::INFO, __FILE__, __LINE__,
+		ricox::common::get_default_logger()->log(ricox::common::log_level::INFO, std::source_location::current(),
 												 "This is a test log message.");
 		std::this_thread::sleep_for(std::chrono::milliseconds(200));
 	}
@@ -14,7 +15,7 @@ auto log_info(unsigned int freq) -> void {
 
 auto log_debug(unsigned int freq) -> void {
 	for (auto i = 0; i < freq; ++i) {
-		ricox::common::get_default_logger()->log(ricox::common::log_level::DEBUG, __FILE__, __LINE__,
+		ricox::common::get_default_logger()->log(ricox::common::log_level::DEBUG, std::source_location::current(),
 												 "This is a test debug message.");
 		std::this_thread::sleep_for(std::chrono::milliseconds(200));
 	}
@@ -22,7 +23,7 @@ auto log_debug(unsigned int freq) -> void {
 
 auto log_error(unsigned int freq) -> void {
 	for (auto i = 0; i < freq; ++i) {
-		ricox::common::get_default_logger()->log(ricox::common::log_level::ERROR, __FILE__, __LINE__,
+		ricox::common::get_default_logger()->log(ricox::common::log_level::ERROR, std::source_location::current(),
 												 "This is a test error message.");
 		std::this_thread::sleep_for(std::chrono::milliseconds(200));
 	}
@@ -30,7 +31,7 @@ auto log_error(unsigned int freq) -> void {
 
 auto log_warning(unsigned int freq) -> void {
 	for (auto i = 0; i < freq; ++i) {
-		ricox::common::get_default_logger()->log(ricox::common::log_level::WARN, __FILE__, __LINE__,
+		ricox::common::get_default_logger()->log(ricox::common::log_level::WARN, std::source_location::current(),
 												 "This is a test warning message.");
 		std::this_thread::sleep_for(std::chrono::milliseconds(200));
 	}
@@ -38,7 +39,7 @@ auto log_warning(unsigned int freq) -> void {
 
 auto log_fatal(unsigned int freq) -> void {
 	for (auto i = 0; i < freq; ++i) {
-		ricox::common::get_default_logger()->log(ricox::common::log_level::FATAL, __FILE__, __LINE__,
+		ricox::common::get_default_logger()->log(ricox::common::log_level::FATAL, std::source_location::current(),
 												 "This is a test critical message.");
 		std::this_thread::sleep_for(std::chrono::milliseconds(200));
 	}

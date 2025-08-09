@@ -4,12 +4,13 @@
 #include <chrono>
 #include <iostream>
 #include <thread>
+#include <source_location>
 
 auto log_info(unsigned int freq, std::shared_ptr<ricox::logger> logger_) -> void {
 	auto log = logger_ ? logger_ : ricox::common::get_default_logger();
 
 	for (auto i = 0; i < freq; ++i) {
-		log->log(ricox::common::log_level::DEBUG, __FILE__, __LINE__, "This is a test log message.");
+		log->log(ricox::common::log_level::DEBUG, std::source_location::current(), "This is a test log message.");
 		std::this_thread::sleep_for(std::chrono::milliseconds(200));
 	}
 }
