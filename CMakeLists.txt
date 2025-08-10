@@ -5,6 +5,7 @@ set(CXX_STANDARD_REQUIRED true)
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_STANDARD 20)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 set(CMAKE_BUILD_TYPE Debug)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
@@ -14,6 +15,7 @@ aux_source_directory(${PROJECT_SOURCE_DIR}/test TEST_DIR)
 
 # Find all test cpp files
 file(GLOB TEST_FILES "${PROJECT_SOURCE_DIR}/test/*.cpp")
+
 
 add_library(async_logger STATIC ${SRC_DIR})
 
