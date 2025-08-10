@@ -1,5 +1,4 @@
-#include "common.hpp"
-#include "log_flush.hpp"
+#include "logger.hpp"
 
 #include <chrono>
 #include <iostream>
@@ -20,12 +19,12 @@ auto main(int argc, char** argv) -> int {
 
 	auto log1 = ricox::common::create_logger(
 		"LOGGER1",
-		{std::make_shared<ricox::roll_flush>("/home/ricox/Documents/async_logger/logger/test/roll_log/roll1.txt", 512)});
-	auto log2 = ricox::common::create_logger<ricox::roll_flush>(
-		"LOGGER2", "/home/ricox/Documents/async_logger/logger/test/roll_log/roll2", 256);
+		{std::make_shared<ricox::file_flush>("/home/ricox/Documents/async_logger/logger/test/file_log/log1.txt")});
+	auto log2 = ricox::common::create_logger<ricox::file_flush>(
+		"LOGGER2", "/home/ricox/Documents/async_logger/logger/test/file_log/log2.txt");
 	auto log3 = ricox::common::create_logger(
 		"LOGGER3",
-		{std::make_shared<ricox::roll_flush>("/home/ricox/Documents/async_logger/logger/test/roll_log/roll3.txt", 128)});
+		{std::make_shared<ricox::file_flush>("/home/ricox/Documents/async_logger/logger/test/file_log/log3.txt")});
 
 	auto t0 = std::thread(log_info, 10, nullptr);
 	auto t1 = std::thread(log_info, 10, log1);
