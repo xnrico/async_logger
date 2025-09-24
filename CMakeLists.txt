@@ -9,6 +9,7 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 set(CMAKE_BUILD_TYPE Debug)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/include/logger_include)
 aux_source_directory(${PROJECT_SOURCE_DIR}/src SRC_DIR)
 aux_source_directory(${PROJECT_SOURCE_DIR}/test TEST_DIR)
 
