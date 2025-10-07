@@ -3,12 +3,19 @@
 #include "message_builder.hpp"
 
 namespace ricox {
+// logger::logger(const std::string& name_, const std::vector<std::shared_ptr<log_flush>>& flush_)
+// 	: name(name_), flush(flush_), worker([this](async_buffer& buffer) -> void { this->flush_callback(buffer); }) {}
+
+// // move construct version
+// logger::logger(std::string&& name_, std::vector<std::shared_ptr<log_flush>>&& flush_) noexcept
+// 	: name(name_), flush(flush_), worker([this](async_buffer& buffer) -> void { this->flush_callback(buffer); }) {}
+
 logger::logger(const std::string& name_, const std::vector<std::shared_ptr<log_flush>>& flush_)
-	: name(name_), flush(flush_), worker([this](async_buffer& buffer) -> void { this->flush_callback(buffer); }) {}
+	: name(name_), flush(flush_), worker([this](lf_buffer<std::string, 4096>& buffer) -> void { this->flush_callback(buffer); }) {}
 
 // move construct version
-logger::logger(std::string&& name_, std::vector<std::shared_ptr<log_flush>>&& flush_) noexcept
-	: name(name_), flush(flush_), worker([this](async_buffer& buffer) -> void { this->flush_callback(buffer); }) {}
+logger::logger(std::string&& name_, std::vector<std::shared_ptr<log_flush>>&& flush_)
+	: name(name_), flush(flush_), worker([this](lf_buffer<std::string, 4096>& buffer) -> void { this->flush_callback(buffer); }) {}
 
 auto logger::flush_callback(async_buffer& buffer) -> void {
 	// this runs asynchronously on a separate thread
@@ -17,6 +24,17 @@ auto logger::flush_callback(async_buffer& buffer) -> void {
 	// flush buffer content to all flush targets
 	for (const auto flush_target : flush) {
 		flush_target->flush(std::string{buffer.read(buffer.get_readable_size())});
+	}
+}
+
+auto logger::flush_callback(lf_buffer<std::string, 4096>& buffer) -> void {
+	// this runs asynchronously on a separate thread
+	std::string item;
+	while (buffer.try_pop(item)) {
+		// flush buffer content to all flush targets
+		for (const auto flush_target : flush) {
+			flush_target->flush(item);
+		}
 	}
 }
 
