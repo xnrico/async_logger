@@ -1,6 +1,8 @@
 #pragma once
 
-#include <format>  // C++20 Format, only supported on gcc-13+
+// #include <format>  // C++20 Format, only supported on gcc-13+
+#include <fmt/format.h>
+
 #include <iostream>
 #include <memory>
 #include <source_location>
@@ -11,6 +13,14 @@
 #include "log_level.hpp"
 
 namespace ricox {
+
+// using std::format_string;
+// using std::vformat;
+// using std::format;
+
+using fmt::format_string;
+using fmt::vformat;
+using fmt::format;
 
 // Forward declaration of async_buffer and async_worker
 class async_buffer;
@@ -38,39 +48,39 @@ class logger {
   auto get_name() noexcept -> const std::string&;
 
   template <typename... Args>
-  auto log(common::log_level level, const std::source_location location, std::format_string<Args...> format,
+  auto log(common::log_level level, const std::source_location location, format_string<Args...> format,
            Args&&... args) -> void {
     // log a message with given log level and format string
-    auto text = std::format(format, std::forward<Args>(args)...);
+    auto text = fmt::format(format, std::forward<Args>(args)...);
     serialize(level, location.file_name(), location.line(), text);
   }
 
   template <typename... Args>
-  auto debug(const std::source_location location, std::format_string<Args...> format, Args&&... args) -> void {
+  auto debug(const std::source_location location, format_string<Args...> format, Args&&... args) -> void {
     // log a debug message
     log(common::log_level::DEBUG, location, format, std::forward<Args>(args)...);
   }
 
   template <typename... Args>
-  auto info(const std::source_location location, std::format_string<Args...> format, Args&&... args) -> void {
+  auto info(const std::source_location location, format_string<Args...> format, Args&&... args) -> void {
     // log an info message
     log(common::log_level::INFO, location, format, std::forward<Args>(args)...);
   }
 
   template <typename... Args>
-  auto warn(const std::source_location location, std::format_string<Args...> format, Args&&... args) -> void {
+  auto warn(const std::source_location location, format_string<Args...> format, Args&&... args) -> void {
     // log a warning message
     log(common::log_level::WARN, location, format, std::forward<Args>(args)...);
   }
 
   template <typename... Args>
-  auto error(const std::source_location location, std::format_string<Args...> format, Args&&... args) -> void {
+  auto error(const std::source_location location, format_string<Args...> format, Args&&... args) -> void {
     // log an error message
     log(common::log_level::ERROR, location, format, std::forward<Args>(args)...);
   }
 
   template <typename... Args>
-  auto fatal(const std::source_location location, std::format_string<Args...> format, Args&&... args) -> void {
+  auto fatal(const std::source_location location, format_string<Args...> format, Args&&... args) -> void {
     // log a fatal message
     log(common::log_level::FATAL, location, format, std::forward<Args>(args)...);
   }

@@ -92,6 +92,40 @@ TEST_F(LoggerTest, ThroughputStr32) {
   }
 }
 
-TEST(End, Report) {
-  std::system("du -h /home/ricox/Documents/async_logger/test/file_log/*.txt");
+TEST_F(LoggerTest, ThroughputStr128) {
+  ASSERT_NE(file_logger3_, nullptr);
+  ASSERT_NE(console_logger_, nullptr);
+  constexpr const char msg[] =
+      "0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 "
+      "0123 0123 0123 01";  // 128 bytes
+
+  auto start_time = std::chrono::steady_clock::now();
+  while (std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - start_time) <
+         1000ms) {
+    file_logger3_->info(std::source_location::current(), "{}", msg);
+  }
 }
+
+TEST_F(LoggerTest, ThroughputStr1024) {
+  ASSERT_NE(file_logger4_, nullptr);
+  ASSERT_NE(console_logger_, nullptr);
+  constexpr const char msg[] =
+      "0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 "
+      "0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 "
+      "0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 "
+      "0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 "
+      "0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 "
+      "0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 "
+      "0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 "
+      "0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 "
+      "0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 0123 "
+      "0123 0123 0123 0123 0123 0123 012";  // 128 bytes
+
+  auto start_time = std::chrono::steady_clock::now();
+  while (std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - start_time) <
+         1000ms) {
+    file_logger4_->info(std::source_location::current(), "{}", msg);
+  }
+}
+
+TEST(End, Report) { std::system("du -h /home/ricox/Documents/async_logger/test/file_log/*.txt"); }

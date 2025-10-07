@@ -3,6 +3,8 @@
 #include <sstream>
 
 namespace ricox {
+	// using std::format;
+	using fmt::format;
 
 // Define ANSI escape codes as constants for readability
 constexpr const char* RESET = "\033[0m";
@@ -68,7 +70,7 @@ auto message_builder::digest() -> std::string {
 			msg->file_name = msg->file_name.substr(pos + 1);
 		}
 
-		out_str += std::format("{}[{}][Thread #{}][{}:{}][{}][{}]:\t{}{}\n", COLOR, time_str,
+		out_str += fmt::format("{}[{}][Thread #{}][{}:{}][{}][{}]:\t{}{}\n", COLOR, time_str,
 							   common::get_short_thread_id(msg->thread_id), msg->file_name, msg->line, msg->logger_name,
 							   common::level_to_string(msg->log_level), msg->message, RESET);
 	} else {

@@ -14,10 +14,11 @@ aux_source_directory(${PROJECT_SOURCE_DIR}/src SRC_DIR)
 aux_source_directory(${PROJECT_SOURCE_DIR}/test TEST_DIR)
 
 find_package(GTest REQUIRED)
+find_package(fmt REQUIRED) # Optimization
+
 
 # Find all test cpp files
 file(GLOB TEST_FILES "${PROJECT_SOURCE_DIR}/test/*.cpp")
-
 
 add_library(async_logger STATIC ${SRC_DIR})
 
@@ -29,7 +30,8 @@ foreach(test_file ${TEST_FILES})
     add_executable(${test_name} ${test_file})
     target_link_libraries(${test_name}
         async_logger
-        GTest::gtest_main)
+        GTest::gtest_main
+        fmt::fmt)
     include(GoogleTest)
     gtest_discover_tests(${test_name})
 endforeach()
